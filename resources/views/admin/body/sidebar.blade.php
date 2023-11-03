@@ -17,6 +17,13 @@
                         <span> Dashboard </span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('pos')}}">
+                        <span class="badge bg-pink float-end">Hot</span>
+                        <i class="mdi mdi-view-dashboard-outline"></i>
+                        <span> POS </span>
+                    </a>
+                </li>
 
 
                 <li class="menu-title mt-2">Apps</li>
@@ -156,6 +163,38 @@
                                 <li>
                                     <a href="{{route('add.product')}}">Add Product</a>
                                 </li>
+                                <li>
+                                    <a href="{{route('import.product')}}">Import Product</a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+
+
+                    </li>
+                    <li>
+                        <a href="#Product" data-bs-toggle="collapse">
+                            <i class="mdi mdi-cart-outline"></i>
+                            <span> Expense </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="Product">
+                            <ul class="nav-second-level">
+                                <li>
+                                    <a href="{{route('add.expense')}}">Add Expense</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('today.expense')}}">Today Expense</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('month.expense')}}">Monthly Expense</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('year.product')}}">Yearly Expense</a>
+                                </li>
+
+
 
                             </ul>
                         </div>

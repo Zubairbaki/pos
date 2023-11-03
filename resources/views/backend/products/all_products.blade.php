@@ -12,10 +12,12 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <a href="{{ route('add.product') }}" class="btn btn-primary waves-effect waves-light">Add
-                                    Product</a>
-
+                                <a href="{{ route('add.product') }}" class="btn btn-blue rounded-pill waves-effect waves-light" style="margin-right: 10px;">Add Product</a>
+                                <a href="{{ route('import.product') }}" class="btn btn-danger rounded-pill waves-effect waves-light" style="margin-right: 10px;">Import Xls</a>
+                                <a href="{{ route('Export') }}" class="btn btn-warning rounded-pill waves-effect waves-light">Export Product</a>
                             </ol>
+
+
                         </div>
                         <h4 class="page-title">Datatables</h4>
                     </div>
@@ -64,7 +66,7 @@
                                             <td>{{ $item->product_code }}</td>
                                             <td>{{ $item->selling_price }}</td>
 
-                                         
+
 
                                             <td><a href="{{ route('edit.products', $item->id) }}"
                                                     class="btn btn-blue rounded-pill waves-effect waves-light"> <i class="fe-edit-1"></i></a>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Backed;
 
+use App\Exports\ProductExport;
 use App\Http\Controllers\Controller;
+use App\Imports\ProductImport;
 use App\Models\Catagory;
 use App\Models\Product;
 use App\Models\Supplier;
@@ -10,6 +12,7 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Intervention\Image\Facades\Image;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -40,7 +43,7 @@ class ProductController extends Controller
             'length' => 4,  // Correct the spelling to 'length'
             'prefix' => 'Pc',
         ]);
-        $image = $req->file('product_image');
+           $image = $req->file('product_image');
         $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
         Image::make($image)->resize(300, 300)->save('upload/products_image/' . $name_gen);
         $save_url = 'upload/products_image/' . $name_gen;
@@ -81,8 +84,9 @@ class ProductController extends Controller
         $product->delete();
 }
 public function UpdateStore(Request $request){
-
     $productUpdate= $request->id;
+
+
     if ($request->hasFile('product_image')){
     $image = $request->file('product_image');
     $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
@@ -137,6 +141,24 @@ public function Barcode($id){
     $product= Product::findOrFail($id);
 
     return view ('backend.products.barcode_product', compact('product'));
+
+}
+
+public function ImportProduct(){
+
+    return view('backend.products.import_product');
+}
+
+public function Export(){
+    return Excel::download(new ProductExport, 'products.xlsx');
+}
+
+public function Import(Request $request){
+
+
+        Excel::import(new ProductImport,$request->file('import_file'));
+
+        return redirect()->back()->with('message', 'All good!');
 
 }
 }

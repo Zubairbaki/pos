@@ -5,6 +5,8 @@ use App\Http\Controllers\Backed\AttandanceController;
 use App\Http\Controllers\Backed\CatagoryController;
 use App\Http\Controllers\Backed\CostomerController;
 use App\Http\Controllers\Backed\EmployController;
+use App\Http\Controllers\Backed\ExpenseController;
+use App\Http\Controllers\Backed\PosController;
 use App\Http\Controllers\Backed\ProductController;
 use App\Http\Controllers\Backed\SalaryController;
 use App\Http\Controllers\Backed\SupplierController;
@@ -125,6 +127,32 @@ Route::middleware('auth')->group(function () {
     Route::get('/delete/product{id}', [ProductController::class, 'deleteProducts'])->name('delete.products');
     Route::post('/update/product', [ProductController::class, 'UpdateStore'])->name('product.update');
     Route::get('/barcod/product{id}', [ProductController::class, 'Barcode'])->name('barcode.products');
+    Route::get('/import/product', [ProductController::class, 'ImportProduct'])->name('import.product');
+    Route::get('/export', [ProductController::class, 'Export'])->name('Export');
+    Route::post('/import', [ProductController::class, 'Import'])->name('import');
+
+
+
+
+
+});
+Route::middleware('auth')->group(function () {
+    Route::get('/add/expense', [ExpenseController::class, 'AddExpense'])->name('add.expense');
+    Route::post('/store/expense', [ExpenseController::class, 'StoreExpense'])->name('expense.store');
+    Route::get('/today/expense', [ExpenseController::class, 'TodayExpense'])->name('today.expense');
+    Route::get('/edit/expense{id}', [ExpenseController::class, 'EditExpense'])->name('edit.expense');
+    Route::post('/update/expense', [ExpenseController::class, 'UpdateExpense'])->name('update.expense');
+    Route::get('/month/expense', [ExpenseController::class, 'MonthExpense'])->name('month.expense');
+    Route::get('/year/expense', [ExpenseController::class, 'YearExpense'])->name('year.product');
+
+
+
+
+
+});
+Route::middleware('auth')->group(function () {
+    Route::get('/pos', [PosController::class, 'Pos'])->name('pos');
+
 
 
 

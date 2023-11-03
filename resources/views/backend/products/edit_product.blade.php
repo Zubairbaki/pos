@@ -27,7 +27,7 @@
 
 
 
-                <form id="myForm" method="POST" action="{{ route('product.update',$product->id) }}" enctype="multipart/form-data">
+                <form id="myForm" method="POST" action="{{ route('product.update',['id'=>$product->id]) }}" enctype="multipart/form-data">
                     @csrf
                     <h5 class="mb-4 text-uppercase"><i class="mdi mdi-account-circle me-1"></i> Personal Info</h5>
                     <div class="row">
