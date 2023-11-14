@@ -161,6 +161,12 @@ return [
 
         //this is for excel
           Maatwebsite\Excel\ExcelServiceProvider::class,
+
+          //this is for cart
+          Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+
+          Spatie\Permission\PermissionServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -191,6 +197,10 @@ return [
 
         //this is for excel
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+        //this is for cart
+        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 

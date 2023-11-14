@@ -6,6 +6,8 @@ use App\Http\Controllers\Backed\CatagoryController;
 use App\Http\Controllers\Backed\CostomerController;
 use App\Http\Controllers\Backed\EmployController;
 use App\Http\Controllers\Backed\ExpenseController;
+use App\Http\Controllers\Backed\OrderController;
+use App\Http\Controllers\Backed\PermissionController;
 use App\Http\Controllers\Backed\PosController;
 use App\Http\Controllers\Backed\ProductController;
 use App\Http\Controllers\Backed\SalaryController;
@@ -100,14 +102,14 @@ Route::middleware('auth')->group(function () {
 
 });
 Route::middleware('auth')->group(function () {
-    Route::get('/atn/list', [AttandanceController::class, 'index'])->name('attendance.index');
-    Route::get('/attendance/create', [AttandanceController::class, 'create'])->name('attendance.create');
-    Route::get('attendance/edit/{date}',[AttandanceController::class, 'Edit'])->name('attendance.edit');
+    Route::middleware('permission:attendance.view')->get('/atn/list', [AttandanceController::class, 'index'])->name('attendance.index');
+    Route::middleware('permission:attendance.add')->get('/attendance/create', [AttandanceController::class, 'create'])->name('attendance.create');
+    Route::middleware('permission:attendance.update')->get('attendance/edit/{date}',[AttandanceController::class, 'Edit'])->name('attendance.edit');
 
-    Route::post('/attendance', [AttandanceController::class, 'store'])->name('attendance.store');
-    Route::patch('/attendance/{id}', [AttandanceController::class, 'update'])->name('attendance.update');
+    Route::middleware('permission:attendance.add')->post('/attendance', [AttandanceController::class, 'store'])->name('attendance.store');
+    Route::middleware('permission:attendance.update')->patch('/attendance/{id}', [AttandanceController::class, 'update'])->name('attendance.update');
 
-    Route::get('attendance/view/{date}',[AttandanceController::class, 'View'])->name('attendance.view');
+    Route::middleware('permission:attendance.delete')->get('attendance/view/{date}',[AttandanceController::class, 'View'])->name('attendance.view');
 
 });
 Route::middleware('auth')->group(function () {
@@ -120,9 +122,9 @@ Route::middleware('auth')->group(function () {
 
 });
 Route::middleware('auth')->group(function () {
-    Route::get('/all/product', [ProductController::class, 'AllProduct'])->name('all.product');
-    Route::get('/add/product', [ProductController::class, 'AddProduct'])->name('add.product');
-    Route::post('/store/product', [ProductController::class, 'AddStore'])->name('product.store');
+    Route::middleware('permission:product.view')->get('/all/product', [ProductController::class, 'AllProduct'])->name('all.product');
+    Route::middleware('permission:product.add')->get('/add/product', [ProductController::class, 'AddProduct'])->name('add.product');
+    Route::middleware('permission:product.add')->post('/store/product', [ProductController::class, 'AddStore'])->name('product.store');
     Route::get('/edit/product{id}', [ProductController::class, 'EditProducts'])->name('edit.products');
     Route::get('/delete/product{id}', [ProductController::class, 'deleteProducts'])->name('delete.products');
     Route::post('/update/product', [ProductController::class, 'UpdateStore'])->name('product.update');
@@ -137,13 +139,13 @@ Route::middleware('auth')->group(function () {
 
 });
 Route::middleware('auth')->group(function () {
-    Route::get('/add/expense', [ExpenseController::class, 'AddExpense'])->name('add.expense');
-    Route::post('/store/expense', [ExpenseController::class, 'StoreExpense'])->name('expense.store');
-    Route::get('/today/expense', [ExpenseController::class, 'TodayExpense'])->name('today.expense');
-    Route::get('/edit/expense{id}', [ExpenseController::class, 'EditExpense'])->name('edit.expense');
-    Route::post('/update/expense', [ExpenseController::class, 'UpdateExpense'])->name('update.expense');
-    Route::get('/month/expense', [ExpenseController::class, 'MonthExpense'])->name('month.expense');
-    Route::get('/year/expense', [ExpenseController::class, 'YearExpense'])->name('year.product');
+    Route::middleware('permission:expense.add')->get('/add/expense', [ExpenseController::class, 'AddExpense'])->name('add.expense');
+    Route::middleware('permission:expense.view')->post('/store/expense', [ExpenseController::class, 'StoreExpense'])->name('expense.store');
+    Route::middleware('permission:import')->get('/today/expense', [ExpenseController::class, 'TodayExpense'])->name('today.expense');
+    Route::middleware('permission:import')->get('/edit/expense{id}', [ExpenseController::class, 'EditExpense'])->name('edit.expense');
+    Route::middleware('permission:expense.update')->post('/update/expense', [ExpenseController::class, 'UpdateExpense'])->name('update.expense');
+    Route::middleware('permission:expense.view')->get('/month/expense', [ExpenseController::class, 'MonthExpense'])->name('month.expense');
+    Route::middleware('permission:expense.view')->get('/year/expense', [ExpenseController::class, 'YearExpense'])->name('year.product');
 
 
 
@@ -151,7 +153,84 @@ Route::middleware('auth')->group(function () {
 
 });
 Route::middleware('auth')->group(function () {
-    Route::get('/pos', [PosController::class, 'Pos'])->name('pos');
+    Route::middleware('permission:pos.view')->get('/pos', [PosController::class, 'Pos'])->name('pos');
+    Route::middleware('permission:pos.add')->post('/add-cart', [PosController::class, 'AddCart']);
+
+    Route::middleware('permission:pos.update')->post('/cart-update/{rowId}', [PosController::class, 'AddUpdate']);
+    Route::middleware('permission:pos.delete')->get('/cart-delete/{rowId}', [PosController::class, 'CartRemove']);
+    Route::post('/create/invoice', [PosController::class, 'CreateInvoice'])->name('create.invoice');
+
+
+
+});
+Route::middleware('auth')->group(function () {
+    Route::post('/final/invoice', [OrderController::class, 'FinalInvoice'])->name('final.invoice');
+    Route::get('/panding/order', [OrderController::class, 'PanddingOrder'])->name('panding.order');
+    Route::get('/order/details{id}', [OrderController::class, 'OrderDetails'])->name('order.details');
+    Route::post('/status/update', [OrderController::class, 'StatusUpdate'])->name('Order.status.update');
+    Route::get('/complete/order', [OrderController::class, 'CompleteOrder'])->name('complete.order');
+    Route::get('/stock', [OrderController::class, 'StockManage'])->name('stock.manage');
+    Route::get('/pdf/download/{order_id}', [OrderController::class, 'OrderInvoice'])->name('pdf.download');
+
+
+
+
+});
+
+// Permssion
+Route::middleware('auth')->group(function () {
+    Route::get('/all/permission', [PermissionController::class, 'AllPermission'])->name('All.permission');
+    Route::get('/add/permission', [PermissionController::class, 'AddPermission'])->name('add.permission');
+    Route::post('/store/permission', [PermissionController::class, 'StorePermission'])->name('permission.store');
+    Route::get('/edit/permission{id}', [PermissionController::class, 'EditPermission'])->name('edit.permission');
+    Route::post('/update/permission', [PermissionController::class, 'UpdatePermission'])->name('update.permission');
+    Route::get('/delete/permission{id}', [PermissionController::class, 'DeletePermission'])->name('delete.permission');
+
+
+
+
+
+});
+
+//ROLES
+Route::middleware('auth')->group(function () {
+    Route::get('/all/roles', [PermissionController::class, 'AllRoles'])->name('All.roles');
+    Route::get('/add/roles', [PermissionController::class, 'AddRoles'])->name('add.roles');
+    Route::post('/store/role', [PermissionController::class, 'StoreRoles'])->name('roles.store');
+    Route::get('/edit/role{id}', [PermissionController::class, 'EditRoles'])->name('Edit.roles');
+    Route::post('/update/role', [PermissionController::class, 'UpdateRoles'])->name('update.role');
+    Route::get('/delete/role{id}', [PermissionController::class, 'DeleteRoles'])->name('delete.roles');
+
+
+
+
+
+});
+
+///ADD ROLES IN PERMISSON
+Route::middleware('auth')->group(function () {
+    Route::get('/add/role/permission', [PermissionController::class, 'AddRolePermission'])->name('add.roles.permission');
+    Route::post('/add/role/permission', [PermissionController::class, 'StoreRolePermission'])->name('role.permission.store');
+    Route::get('/all/role/permission', [PermissionController::class, 'AllRolePermission'])->name('all.roles.permission');
+    Route::get('/admin/role/edit/{id}', [PermissionController::class, 'AdminEditRoles'])->name('admin.edit.roles');
+    Route::post('/admin/role/update/{id}', [PermissionController::class, 'AdminUpdateRoles'])->name('role.permission.update');
+
+
+
+
+
+
+});
+
+//Admin User ALL routes
+Route::middleware('auth')->group(function () {
+    Route::get('/all/admin', [PermissionController::class, 'AllAdmin'])->name('All.admin');
+    Route::get('/add/admin', [PermissionController::class, 'AddAdmin'])->name('add.admin');
+    Route::post('/store/admin', [PermissionController::class, 'StoreAdmin'])->name('admin.store');
+    Route::get('/edit/admin/{id}', [PermissionController::class, 'EditAdmin'])->name('edit.admin');
+    Route::post('/update/admin', [PermissionController::class, 'UpdateAdmin'])->name('admin.update');
+    Route::get('/delete/admin/{id}', [PermissionController::class, 'DeleteAdmin'])->name('delet.admin');
+
 
 
 

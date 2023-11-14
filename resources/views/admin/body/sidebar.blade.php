@@ -17,6 +17,8 @@
                         <span> Dashboard </span>
                     </a>
                 </li>
+
+                @if(auth()->user()->can('pos.view'))
                 <li>
                     <a href="{{route('pos')}}">
                         <span class="badge bg-pink float-end">Hot</span>
@@ -24,6 +26,7 @@
                         <span> POS </span>
                     </a>
                 </li>
+                @endif
 
 
                 <li class="menu-title mt-2">Apps</li>
@@ -116,6 +119,7 @@
 
 
                 </li>
+
                 <li>
                     <a href="#attandance" data-bs-toggle="collapse">
                         <i class="mdi mdi-cart-outline"></i>
@@ -125,13 +129,20 @@
                     <div class="collapse" id="attandance">
                         <ul class="nav-second-level">
                             <li>
+
+                                @can('attendance.view')
                                 <a href="{{ route('attendance.index') }}">Employee Attendance List</a>
+                                @endcan
+
+                                @can('attendance.add')
                                 <a href="{{ route('attendance.create') }}">Add Attendance </a>
+                                @endcan
                             </li>
                         </ul>
                     </div>
                 </li>
 
+                @can('category.view')
                 <li>
                     <a href="#Catagory" data-bs-toggle="collapse">
                         <i class="mdi mdi-cart-outline"></i>
@@ -147,6 +158,8 @@
                         </ul>
                     </div>
                 </li>
+                @endcan
+
                 <li>
 
                     <li>
@@ -174,12 +187,110 @@
 
                     </li>
                     <li>
-                        <a href="#Product" data-bs-toggle="collapse">
+                        <a href="#orders" data-bs-toggle="collapse">
+                            <i class="mdi mdi-cart-outline"></i>
+                            <span> Order List </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="orders">
+                            <ul class="nav-second-level">
+                                <li>
+                                    <a href="{{route('panding.order')}}">Padding order</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('complete.order')}}">Complete order</a>
+                                </li>
+
+
+
+                            </ul>
+                        </div>
+
+
+                    </li>
+                    <li>
+                        <a href="#stock" data-bs-toggle="collapse">
+                            <i class="mdi mdi-cart-outline"></i>
+                            <span> Stock Manage </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="stock">
+                            <ul class="nav-second-level">
+                                <li>
+                                    <a href="{{route('stock.manage')}}">Stock  Manage</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('complete.order')}}">Complete order</a>
+                                </li>
+
+
+
+                            </ul>
+                        </div>
+
+
+                    </li>
+                    <li>
+                        <a href="#permission" data-bs-toggle="collapse">
+                            <i class="mdi mdi-cart-outline"></i>
+                            <span> Roles $ Permission </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="permission">
+                            <ul class="nav-second-level">
+                                <li>
+                                    <a href="{{route('All.permission')}}">All  Permission</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('add.permission')}}">Add Permisssion</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('All.roles')}}">All Roles</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('add.roles.permission')}}"> Roles in Permission</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('all.roles.permission')}}"> All in Permission</a>
+                                </li>
+
+
+
+                            </ul>
+                        </div>
+
+
+                    </li>
+                    <li>
+                        <a href="#admin" data-bs-toggle="collapse">
+                            <i class="mdi mdi-cart-outline"></i>
+                            <span> Setting Admin User</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="admin">
+                            <ul class="nav-second-level">
+                                <li>
+                                    <a href="{{route('All.admin')}}">All  Admin</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('add.admin')}}">Add Admin</a>
+                                </li>
+
+
+
+
+                            </ul>
+                        </div>
+
+
+                    </li>
+                    <li>
+                        <a href="#Expense" data-bs-toggle="collapse">
                             <i class="mdi mdi-cart-outline"></i>
                             <span> Expense </span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse" id="Product">
+                        <div class="collapse" id="Expense">
                             <ul class="nav-second-level">
                                 <li>
                                     <a href="{{route('add.expense')}}">Add Expense</a>
