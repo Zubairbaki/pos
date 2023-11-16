@@ -172,6 +172,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/stock', [OrderController::class, 'StockManage'])->name('stock.manage');
     Route::get('/pdf/download/{order_id}', [OrderController::class, 'OrderInvoice'])->name('pdf.download');
 
+    //all due padding
+    Route::get('/all/due', [OrderController::class, 'AllPanddingDue'])->name('padding.due');
+    Route::get('/order/due/{id}', [OrderController::class, 'OrderDueajex']);
+    Route::post('/update/due/', [OrderController::class, 'UpdateDue'])->name('update.due');
+
 
 
 

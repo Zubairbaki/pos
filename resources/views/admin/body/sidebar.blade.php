@@ -200,6 +200,9 @@
                                 <li>
                                     <a href="{{route('complete.order')}}">Complete order</a>
                                 </li>
+                                <li>
+                                    <a href="{{route('padding.due')}}">Padding due</a>
+                                </li>
 
 
 

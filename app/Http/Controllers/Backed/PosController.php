@@ -7,13 +7,16 @@ use App\Models\Costomer;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class PosController extends Controller
 {
     public function Pos()
     {
 
-        $product = Product::latest()->get();
+        $todaydate= Carbon::now();
+
+        $product = Product::where('expire_date','>',$todaydate)->latest()->get();
 
         $costomer = Costomer::latest()->get();
 

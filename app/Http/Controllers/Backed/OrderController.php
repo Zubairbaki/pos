@@ -17,6 +17,10 @@ class OrderController extends Controller
 {
   public function FinalInvoice(Request $request){
 
+    $rtotal= $request->total;
+    $rpay= $request->pay;
+    $mtotal=$rtotal-$rpay;
+
     $data= array();
     $data["customer_id"]=$request->customer_id;
     $data["order_date"]=$request->order_date;
@@ -28,7 +32,7 @@ class OrderController extends Controller
     $data["total"]=$request->total;
     $data["payment_status"]=$request->payment_status;
     $data["pay"]=$request->pay;
-    $data["due"]=$request->due;
+    $data["due"]= $mtotal;
     $data["created_at"]=Carbon::now();
 
     $order_id =Order::insertGetId($data);
@@ -121,5 +125,40 @@ class OrderController extends Controller
 
 
 
+  }
+
+  public function AllPanddingDue(){
+    $alldata= Order::where('due','>','0')->orderBy('id','DESC')->get();
+
+    return view('backend.order.padding_due',compact('alldata'));
+  }
+
+  public function OrderDueajex($id){
+
+    $order=Order::findOrFail( $id );
+
+    return response()->json($order);
+
+  }
+
+  public function UpdateDue(Request $request){
+
+    $order_id=$request->id;
+    $due_amount=$request->due;
+    $payment= $request->pay;
+
+    $allorder=Order::findOrFail( $order_id );
+
+    $maindue= $allorder->due;
+    $mainpay= $allorder->pay;
+
+    $paid_due =$maindue -  $due_amount;
+    $paid_pay = $mainpay +  $due_amount;
+
+    Order::findOrFail( $order_id )->update([
+        'due'=> $paid_due,
+        'pay'=> $paid_pay,
+    ]);
+    return redirect()->route('padding.due')->with('message','update');
   }
 }
